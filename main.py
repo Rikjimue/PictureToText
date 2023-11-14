@@ -2,9 +2,13 @@ from PIL import Image
 import sys
 import tkinter as tk
 from tkinter import filedialog
+from ctypes import windll
 
+# Fixes blurry Tkinter window
+windll.shcore.SetProcessDpiAwareness(1)
+
+# Creates a list of keyboard characters that can be encoded into the message
 keyboard_characters = [chr(i) for i in range(32, 127)]
-# Add additional special characters
 special_characters = "!\#$%&'()*+,-./:;<=>?@[]^_`{|}~"
 keyboard_characters.extend(special_characters)
 keyboard_characters.append('"')
@@ -19,6 +23,7 @@ class ImageEncoder:
         for i in range(len(message)):
             keyboard_index = keyboard_characters.index(message[i])
             rgba: list = list(self.image.getpixel((0, i)))
+            # Encoded RGBA Value = (0, 225, x, 0)
             rgba[0] = 0
             rgba[1] = 255
             rgba[2] = keyboard_index
@@ -37,6 +42,7 @@ class ImageEncoder:
     def resetImage(self):
         rgba_cleared = 0
         rgba_values = list(self.image.getdata())
+        # Takes all encoded RGBA values and replaces them with a trivial RGBA value.
         for i in range(len(rgba_values)):
             if rgba_values[i][0] == 0 and rgba_values[i][1] == 255 and rgba_values[i][3] == 0:
                 rgba_value: list = list(rgba_values[i])
@@ -46,6 +52,7 @@ class ImageEncoder:
                 rgba_value: tuple = tuple(rgba_value)
                 self.image.putpixel((0, i // self.image.width), rgba_value)
                 rgba_cleared += 1
+        # Sets all pixels on the y-axis to be transparent
         for i in range(self.image.height):
             x = i % self.image.width
             y = i // self.image.width
@@ -58,20 +65,20 @@ class ImageEncoder:
         self.image.save(self.image_path, "PNG")
         print(f"Cleared: {rgba_cleared} values.\n")
 
-    def show(self, title):
+    def showImage(self, title):
         self.image.show(f"{title}")
 
     def getPixel(self, coordinates):
         return self.image.getpixel(coordinates)
 
 
-def openFileDialog():
+def openFileDialog():  # Creates the window to select a file
     root = tk.Tk()
     root.withdraw()  # Hide the main window
     file_path = filedialog.askopenfilename(title="Select an image file",
                                            filetypes=[("Image files",
-                                                       "*.png;*.jpg;*.jpeg;*.bmp;*.ppm;
-                                                       *.pgm;*.pbm;*.tif;*.tiff,*.gif")])
+                                                       "*.png;*.jpg;*.jpeg;*.bmp;*.ppm;"
+                                                       "*.pgm;*.pbm;*.tif;*.tiff,*.gif")])
     return file_path
 
 
@@ -98,7 +105,7 @@ def mainMenu():
                 image_controller.resetImage()
                 message = str(input("\nEnter a message you want to encode: "))
                 image_controller.encode(message)
-                image_controller.image.save(image_path, "PNG")
+                image_controller.image.save(image_path, "PNG")  # Uses PNG for lossless compression
                 print("\nEncoded successfully.")
                 input("\n> ")
             case '2':
@@ -106,7 +113,7 @@ def mainMenu():
                 print(f"Message: {image_controller.decode()}")
                 input("\n> ")
             case '3':
-                image_controller.show("image")
+                image_controller.showImage("image")
             case '4':
                 print("\n____________\n")
                 image_controller.resetImage()
@@ -132,3 +139,4 @@ def mainMenu():
 
 if __name__ == '__main__':
     mainMenu()
+
