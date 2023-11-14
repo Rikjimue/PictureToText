@@ -85,7 +85,7 @@ def mainMenu():
     image_controller = ImageEncoder(image_path)
     while True:
         print("\n____________\n")
-        print("1. Encode a picture)")
+        print("1. Encode a picture")
         print("2. Decode a picture")
         print("3. View picture")
         print("4. Reset Picture")
