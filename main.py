@@ -70,11 +70,12 @@ def openFileDialog():
     root.withdraw()  # Hide the main window
     file_path = filedialog.askopenfilename(title="Select an image file",
                                            filetypes=[("Image files",
-                                                       "*.png;*.jpg;*.jpeg;*.bmp;*.ppm;*.pgm;*.pbm;*.tif;*.tiff,*.gif")])
+                                                       "*.png;*.jpg;*.jpeg;*.bmp;*.ppm;
+                                                       *.pgm;*.pbm;*.tif;*.tiff,*.gif")])
     return file_path
 
 
-def main():
+def mainMenu():
     print("\n____________\n")
     print("Select a file to edit.")
     image_path = openFileDialog()
@@ -130,4 +131,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    mainMenu()
