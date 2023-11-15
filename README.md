@@ -4,11 +4,13 @@ This is a small program that takes a file that can encode a message into a pictu
 # How to use
 To use this file you download the main.py file. It needs the Tkinter and Pillow libraries to run. Once you have the files and libraries downloaded you can run the file in the command line. Follow the commands on the menu to encode and decode. If the window to select the file does not appear it is most likely behind the window you are currently on.
 
-Commands:
-- cd c:\Users\your\file\path
-- pip install Pillow
-- pip install tk
-- py main.py
+Command line commands:
+```command line
+  cd c:\Users\your\file\path
+  pip install Pillow
+  pip install tk
+  py main.py
+```
 
 # Future add-ons
 In the future I hope to make it be able to encode more pixels inside the picture without being noticeable to make the amount of characters inside the message not limited by the height of the image.
